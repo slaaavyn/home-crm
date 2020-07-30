@@ -1,28 +1,58 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <v-app id="smart-home">
+        <router-view/>
+    </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import axios from 'axios';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        created() {
+            axios.interceptors.response.use(undefined, function (err) {
+                return new Promise( () => {
+                    if (err.status === 403 && !this.$store.getters.isAuthenticated) {
+                        this.$store.dispatch('authLogout')
+                            .then(() => {
+                                this.$router.push('/login');
+                            });
+                    }
+                    throw err;
+                });
+            });
+        }
+    }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+    .shake {
+        -webkit-animation: kf_shake 0.4s 1 linear;
+        -moz-animation: kf_shake 0.4s 1 linear;
+        -o-animation: kf_shake 0.4s 1 linear;
+    }
+
+    @-webkit-keyframes kf_shake {
+        0% { -webkit-transform: translate(30px); }
+        20% { -webkit-transform: translate(-30px); }
+        40% { -webkit-transform: translate(15px); }
+        60% { -webkit-transform: translate(-15px); }
+        80% { -webkit-transform: translate(8px); }
+        100% { -webkit-transform: translate(0px); }
+    }
+    @-moz-keyframes kf_shake {
+        0% { -moz-transform: translate(30px); }
+        20% { -moz-transform: translate(-30px); }
+        40% { -moz-transform: translate(15px); }
+        60% { -moz-transform: translate(-15px); }
+        80% { -moz-transform: translate(8px); }
+        100% { -moz-transform: translate(0px); }
+    }
+    @-o-keyframes kf_shake {
+        0% { -o-transform: translate(30px); }
+        20% { -o-transform: translate(-30px); }
+        40% { -o-transform: translate(15px); }
+        60% { -o-transform: translate(-15px); }
+        80% { -o-transform: translate(8px); }
+        100% { -o-origin-transform: translate(0px); }
+    }
 </style>
