@@ -25,7 +25,7 @@ export default {
                         // response is array of users
                         resolve(resp.data);
                     })
-                    .catch(error => reject(error));
+                    .catch(error => reject(error.response));
             });
         },
 
@@ -36,7 +36,21 @@ export default {
                         // response user
                         resolve(resp.data);
                     })
-                    .catch(error => reject(error));
+                    .catch(error => reject(error.response));
+            });
+        },
+
+        createUser: (ctx, user) => {
+            return new Promise((resolve, reject) => {
+
+                axios({url: endpoints.USER_CREATE, data: user, method: 'POST' })
+                    .then(resp => {
+                        // response user
+                        resolve(resp.data);
+                    })
+                    .catch(err => {
+                        reject(err.response);
+                    })
             });
         },
 
@@ -55,7 +69,7 @@ export default {
                         resolve(resp.data);
                     })
                     .catch(err => {
-                        reject(err);
+                        reject(err.response);
                     })
             });
         },
@@ -73,6 +87,19 @@ export default {
                     })
             });
         },
+
+        deleteUser: (ctx, user) => {
+            return new Promise((resolve, reject) => {
+
+                axios({url: `${endpoints.USER}/${user.id}?role=${user.role}`, method: 'DELETE' })
+                    .then(resp => {
+                        resolve(resp);
+                    })
+                    .catch((err) => {
+                        reject(err.response);
+                    })
+            });
+        }
     },
     getters: {
         getUser: (state) => state.user,

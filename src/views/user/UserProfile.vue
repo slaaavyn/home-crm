@@ -93,8 +93,9 @@
 </template>
 
 <script>
-    import userRoles from "../utils/constants/userRoles";
+    import userRoles from "../../utils/constants/userRoles";
     import {mapActions, mapGetters} from "vuex";
+    import {capitalize} from '../../utils/filter'
 
     export default {
         name: "UserProfile",
@@ -222,11 +223,7 @@
         },
 
         filters: {
-            capitalize: function (value) {
-                if (!value) return ''
-                value = value.toString()
-                return value.charAt(0).toUpperCase() + value.slice(1)
-            }
+            capitalize: (value) => capitalize(value),
         },
     }
 </script>

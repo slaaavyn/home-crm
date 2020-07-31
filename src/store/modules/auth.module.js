@@ -60,8 +60,8 @@ export default {
                         resolve(resp);
                     })
                     .catch(err => {
-                        commit('AUTH_LOGOUT');
                         commit('clearLocalUser');
+                        commit('AUTH_LOGOUT');
                         reject(err);
                     })
             });
@@ -70,6 +70,7 @@ export default {
         authLogout: ({commit}) => {
             return new Promise((resolve) => {
                 commit('AUTH_LOGOUT');
+                commit('clearLocalUser');
                 delete axios.defaults.headers.common['Authorization'];
                 resolve();
             })

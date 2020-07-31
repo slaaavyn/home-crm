@@ -53,7 +53,7 @@
                 </v-list-item-content>
             </v-list-item>
 
-            <v-list-item link v-if="getUser.role === ROLE_ADMIN">
+            <v-list-item link :to="'/user'" v-if="getUser.role === ROLE_ADMIN">
                 <v-list-item-action>
                     <v-icon>mdi-account-multiple</v-icon>
                 </v-list-item-action>
@@ -107,7 +107,7 @@
                     .then(() => {
                         this.$router.push('/login');
                     });
-            }
+            },
         },
     }
 </script>
