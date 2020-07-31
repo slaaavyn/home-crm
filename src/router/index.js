@@ -40,13 +40,13 @@ const routes = [
         children: [
             {
                 path: '/user',
-                component: () => import('../components/UserProfile'),
+                component: () => import('../views/user/UserList'),
                 beforeEnter: ifAuthenticatedAsRoleAdmin
             },
 
             {
                 path: '/user/:id',
-                component: () => import('../components/UserProfile'),
+                component: () => import('../views/user/UserProfile'),
                 beforeEnter: ifAuthenticated
             }
         ]
