@@ -24,6 +24,8 @@ export default {
 
             state.refreshTokenExpired = responseObj.refreshTokenExpired;
             localStorage.setItem('refreshTokenExpired', state.refreshTokenExpired);
+
+            axios.defaults.headers.common['Authorization'] = state.token;
         },
 
         AUTH_LOGOUT: (state) => {
@@ -38,6 +40,8 @@ export default {
 
             state.refreshTokenExpired = null;
             localStorage.removeItem(storageTypes.REFRESH_TOKEN_EXPIRED);
+
+            axios.defaults.headers.common['Authorization'] = null;
         },
     },
 

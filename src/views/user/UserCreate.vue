@@ -99,6 +99,7 @@
     import {capitalize} from "../../utils/filter";
     import userRoles from "../../utils/constants/userRoles";
     import {mapActions} from "vuex";
+    import EventBus from "../../plugins/eventBus";
 
     export default {
         name: "UserCreate",
@@ -177,7 +178,7 @@
                     })
                     .catch(e => {
                         this.setErrorState();
-                        this.$emit('showError', e.data.message);
+                        EventBus.emitError(e);
                     });
             }
         },

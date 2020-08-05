@@ -48,7 +48,13 @@ const routes = [
                 path: '/user/:id',
                 component: () => import('../views/user/UserProfile'),
                 beforeEnter: ifAuthenticated
-            }
+            },
+
+            {
+                path: '/room',
+                component: () => import('../views/room/RoomList'),
+                beforeEnter: ifAuthenticated
+            },
         ]
     },
     {

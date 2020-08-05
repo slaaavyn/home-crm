@@ -46,13 +46,13 @@
         </v-data-table>
 
         <v-dialog v-model="createDialog" max-width="500px">
-            <UserCreate v-on:addUserToList="addUserToList" v-on:showError="showError"/>
+            <UserCreate v-on:addUserToList="addUserToList"/>
         </v-dialog>
 
-        <v-dialog v-model="deleteDialog" persistent max-width="290">
+        <v-dialog v-model="deleteDialog" max-width="500px">
             <v-card>
-                <v-card-title class="headline">
-                    Are you sure you want to delete <b>{{ `${selectedUser.firstName} ${selectedUser.lastName}` }}</b> ?
+                <v-card-title class="justify-center">
+                    Are you sure you want to delete <b class="pa-2">{{ `${selectedUser.firstName} ${selectedUser.lastName}` }}</b>?
                 </v-card-title>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -63,29 +63,6 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
-        <!--alert-->
-        <v-snackbar
-                dark
-                color="error"
-                v-model="isShowErrorBar">
-
-                <v-app-bar-nav-icon>
-                    <v-icon>mdi-alert</v-icon>
-                </v-app-bar-nav-icon>
-
-                {{ errorMessage | capitalize }}
-
-            <template v-slot:action="{ attrs }">
-                <v-btn
-                        text
-                        v-bind="attrs"
-                        @click="isShowErrorBar = false"
-                >
-                    Close
-                </v-btn>
-            </template>
-        </v-snackbar>
     </v-container>
 </template>
 
@@ -93,6 +70,7 @@
     import UserCreate from "./UserCreate";
     import {capitalize, roleFilter} from '../../utils/filter';
     import {mapActions} from "vuex";
+    import EventBus from "../../plugins/eventBus";
 
     export default {
         components: {
@@ -103,8 +81,6 @@
             isLoadingData: false,
             deleteDialog: false,
             createDialog: false,
-            isShowErrorBar: false,
-            errorMessage: '',
             selectedUser: {},
 
             headers: [
@@ -135,11 +111,6 @@
                 this.createDialog = false;
             },
 
-            showError(message) {
-                this.errorMessage = message;
-                this.isShowErrorBar = true;
-            },
-
             fetchData () {
                 this.isLoadingData = true;
 
@@ -151,7 +122,7 @@
                     .catch(e => {
                         this.userList = []
                         this.isLoadingData = false;
-                        console.log(e);
+                        EventBus.emitError(e);
                     });
             },
 
@@ -176,8 +147,7 @@
                     })
                     .catch(e => {
                         this.deleteDialog = false;
-                        this.showError(e.data.message);
-                        console.log(e);
+                        EventBus.emitError(e);
                     });
             }
         },

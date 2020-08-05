@@ -33,7 +33,7 @@
                 </v-list-item-content>
             </v-list-item>
 
-            <v-list-item link>
+            <v-list-item link :to="'/room'">
                 <v-list-item-action>
                     <v-icon>mdi-home</v-icon>
                 </v-list-item-action>
